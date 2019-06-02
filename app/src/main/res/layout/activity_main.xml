@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.ljp.newsdemo.view.NewsScrollView
+<com.ljp.newsdemo.widget.NewsScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/news_scrollview"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/rl_content"
+        android:id="@+id/rl_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <RelativeLayout
+            android:id="@+id/rl_content"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:background="@color/colorAccent"
-            app:title="我是标题"/>
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tv_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbar"
-            android:padding="10dp"
-            android:text="@string/content"
-            android:textColor="@color/colorPrimary"
-            android:textSize="14sp"/>
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="@color/colorAccent"
+                app:title="我是标题"/>
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toolbar"
+                android:padding="10dp"
+                android:text="@string/content"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"/>
+        </RelativeLayout>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_layout"
@@ -43,14 +47,15 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/rl_content"
-        android:background="#cccccc"/>
+        android:layout_below="@id/rl_top"
+        android:background="#333333"/>
 
-    <com.ljp.newsdemo.view.NewsViewPager
+    <com.ljp.newsdemo.widget.NewsViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/view"
         android:background="#ffffff"/>
 
-</com.ljp.newsdemo.view.NewsScrollView>
+
+</com.ljp.newsdemo.widget.NewsScrollView>

@@ -1,4 +1,4 @@
-package com.ljp.newsdemo.view;
+package com.ljp.newsdemo.widget;
 
 
 import android.content.Context;
@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
  */
 public class NewsScrollView extends RelativeLayout {
     private static final String TAG = "NewsScrollView";
-    private Context mContext;
     private float downEvY;//第一次按下去时的ev.getY
     private OnScrollListener mOnScrollListener;
     private int mMaxScrollViewRange = 0;//最大移动距离
@@ -35,18 +34,6 @@ public class NewsScrollView extends RelativeLayout {
 
     public NewsScrollView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.mContext = context;
-        init();
-
-    }
-
-    private void init() {
-
-    }
-
-    public int dip2px(float dpValue) {
-        final float scale = mContext.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
     }
 
     @Override
@@ -122,7 +109,6 @@ public class NewsScrollView extends RelativeLayout {
             return true;
         }
     }
-
 
     public void setOnScrollListener(OnScrollListener onScrollListener) {
         this.mOnScrollListener = onScrollListener;

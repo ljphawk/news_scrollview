@@ -1,6 +1,7 @@
 package com.ljp.newsdemo.adapter;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ljp.newsdemo.R;
-import com.ljp.newsdemo.bean.NewsInfoBean;
 
 import java.util.List;
 
@@ -24,12 +24,14 @@ import java.util.List;
  *@更新时间         $Date$
  *@更新描述
  */
+
+@SuppressLint("RecyclerView")
 public class NewsRvAdapter extends RecyclerView.Adapter<NewsRvAdapter.NewsViewHolder> {
 
     private Context mContext;
-    private List<NewsInfoBean> mShowItems;
+    private List<String> mShowItems;
 
-    public NewsRvAdapter(Context context, List<NewsInfoBean> showItems) {
+    public NewsRvAdapter(Context context, List<String> showItems) {
         mContext = context;
         mShowItems = showItems;
     }
@@ -43,10 +45,9 @@ public class NewsRvAdapter extends RecyclerView.Adapter<NewsRvAdapter.NewsViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final NewsViewHolder newsViewHolder, final int i) {
-        NewsInfoBean newsInfoBean = mShowItems.get(i);
-        if (null != newsInfoBean) {
-            newsViewHolder.mTvTitle.setText(newsInfoBean.getTitle());
-            newsViewHolder.mTvContent.setText(newsInfoBean.getContent());
+        String title = mShowItems.get(i);
+        if (null != title) {
+            newsViewHolder.mTvTitle.setText(title);
 
             newsViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -54,7 +55,6 @@ public class NewsRvAdapter extends RecyclerView.Adapter<NewsRvAdapter.NewsViewHo
                     Toast.makeText(mContext, "position = " + i, Toast.LENGTH_SHORT).show();
                 }
             });
-
         }
     }
 
@@ -66,13 +66,11 @@ public class NewsRvAdapter extends RecyclerView.Adapter<NewsRvAdapter.NewsViewHo
     class NewsViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView mTvTitle;
-        private final TextView mTvContent;
         private final View itemView;
 
         NewsViewHolder(@NonNull View itemView) {
             super(itemView);
             mTvTitle = itemView.findViewById(R.id.tv_title);
-            mTvContent = itemView.findViewById(R.id.tv_content);
             this.itemView = itemView;
         }
     }

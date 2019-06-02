@@ -4,17 +4,19 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ljp.newsdemo.R;
 import com.ljp.newsdemo.adapter.ClassifyVpAdapter;
+import com.ljp.newsdemo.widget.NewsScrollView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +25,11 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
-    private NewsViewPager mViewPager;
+    private ViewPager mViewPager;
     private NewsScrollView mNewScrollview;
     private Context mContext;
     private TextView mTvContent;
+    private RelativeLayout mRlContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout = findViewById(R.id.tab_layout);
         mViewPager = findViewById(R.id.view_pager);
         mNewScrollview = findViewById(R.id.news_scrollview);
+        mRlContent = findViewById(R.id.rl_content);
 
         mTvContent.post(new Runnable() {
             @Override
@@ -91,25 +95,28 @@ public class MainActivity extends AppCompatActivity {
                 float power = height * 1f / maxRange;
                 //计算tablayout的滚动距离
                 float tabMoveY = -height + power * Math.abs(y);
-                //透明度的计算0—255  假设最多透明到100f
+                //透明度的计算0—1
                 float alphaPower = 1f / maxRange;
                 float alpha = 1 - (alphaPower * Math.abs(y));
-                Log.d("===", "onScrollChange: alpha = " + alpha);
+                //mRlContent 也一起移动 只移动
+                float contentMoveY = 0 - (power * Math.abs(y));
                 if (isAnim) {
                     AnimListener animListener = new AnimListener();
-                    ViewCompat.animate(mViewPager).translationY(y).setDuration(500).start();
-                    ViewCompat.animate(mTabLayout).translationY(tabMoveY).setDuration(500).setListener(animListener).start();
+                    ViewCompat.animate(mViewPager).translationY(y).setDuration(500).setListener(animListener).start();
+                    ViewCompat.animate(mTabLayout).translationY(tabMoveY).setDuration(500).start();
+                    ViewCompat.animate(mRlContent).translationY(contentMoveY).setDuration(500).start();
                     if (y == 0) {
                         //还原了
-                        ViewCompat.animate(mTvContent).alpha(alpha).alphaBy(1).setDuration(500).start();
+                        ViewCompat.animate(mRlContent).alpha(alpha).alphaBy(1).setDuration(500).start();
                     } else {
                         //合并了
-                        ViewCompat.animate(mTvContent).alpha(alpha).alphaBy(0).setDuration(500).start();
+                        ViewCompat.animate(mRlContent).alpha(alpha).alphaBy(0).setDuration(500).start();
                     }
                 } else {
                     mViewPager.setTranslationY(y);
                     mTabLayout.setTranslationY(tabMoveY);
-                    mTvContent.setAlpha(alpha);
+                    mRlContent.setTranslationY(contentMoveY);
+                    mRlContent.setAlpha(alpha);
                 }
             }
         });
@@ -119,14 +126,15 @@ public class MainActivity extends AppCompatActivity {
     private void restoreLayoutAnim() {
         ViewCompat.animate(mViewPager).translationY(0).setDuration(500).start();
         ViewCompat.animate(mTabLayout).translationY(-mTabLayout.getHeight()).setDuration(500).start();
-        ViewCompat.animate(mTvContent).alpha(0).alphaBy(1).setDuration(500).start();
+        ViewCompat.animate(mRlContent).alpha(0).alphaBy(1).setDuration(500).start();
+        ViewCompat.animate(mRlContent).translationY(0).setDuration(500).start();
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (mNewScrollview.getIsMerge()) {
-                mNewScrollview.scrollTo(0,0);
+                mNewScrollview.scrollTo(0, 0);
                 //恢复原来的样子
                 restoreLayoutAnim();
                 mNewScrollview.setMergeState(false);

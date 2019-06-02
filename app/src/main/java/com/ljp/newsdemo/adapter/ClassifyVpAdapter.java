@@ -38,11 +38,6 @@ public class ClassifyVpAdapter extends FragmentPagerAdapter {
         return mShowItems.get(i);
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
 
     @Override
     public int getCount() {

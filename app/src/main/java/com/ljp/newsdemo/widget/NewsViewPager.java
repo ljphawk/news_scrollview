@@ -1,4 +1,4 @@
-package com.ljp.newsdemo.view;
+package com.ljp.newsdemo.widget;
 
 
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 
 /*
@@ -40,11 +42,15 @@ public class NewsViewPager extends ViewPager {
                 }
             }
         }
-
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+        DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
+//        heightMeasureSpec = MeasureSpec.makeMeasureSpec(dm.heightPixels, MeasureSpec.EXACTLY);
+        if (height != 0) {
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+        }
+        Log.d("===", "onMeasure:height = " + height);
+        Log.d("===", "onMeasure:dm = " + dm.heightPixels);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
-
 
 
 }
