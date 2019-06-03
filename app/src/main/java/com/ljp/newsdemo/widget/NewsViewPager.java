@@ -30,11 +30,9 @@ public class NewsViewPager extends ViewPager {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
         if (maxHeight != 0) {
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.EXACTLY);
         }
-
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 

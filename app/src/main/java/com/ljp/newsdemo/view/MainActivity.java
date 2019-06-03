@@ -48,21 +48,22 @@ public class MainActivity extends AppCompatActivity {
         mNewScrollview = findViewById(R.id.news_scrollview);
         mRlContent = findViewById(R.id.rl_content);
 
-        mTvContent.post(new Runnable() {
+
+        //TODO 需要优化
+        mViewPager.post(new Runnable() {
             @Override
             public void run() {
-                //TODO 需要优化
-                mViewPager.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mViewPager.setMaxHeight(mTvContent.getMeasuredHeight() + mViewPager.getMeasuredHeight());
-                    }
-                });
+                //设置viewpager的高度
+                mViewPager.setMaxHeight(mTvContent.getMeasuredHeight() + mViewPager.getMeasuredHeight());
+                //设置滑动的最大距离
                 mNewScrollview.setMaxScrollViewRange(mTvContent.getMeasuredHeight());
+                //初始化时把tablayout移除屏幕外
+                mTabLayout.setTranslationY(-mTabLayout.getMeasuredHeight());
                 initData();
                 initListener();
             }
         });
+
     }
 
     private void initData() {
@@ -77,14 +78,6 @@ public class MainActivity extends AppCompatActivity {
         ClassifyVpAdapter classifyVpAdapter = new ClassifyVpAdapter(getSupportFragmentManager(), vpDataList, classify);
         mViewPager.setAdapter(classifyVpAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
-
-        //初始化时把tablayout移除屏幕外
-        mTabLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mTabLayout.setTranslationY(-mTabLayout.getMeasuredHeight());
-            }
-        });
     }
 
     private void initListener() {
