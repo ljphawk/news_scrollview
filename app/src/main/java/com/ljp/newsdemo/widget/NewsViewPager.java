@@ -6,9 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.View;
 
 /*
  *@创建者       L_jp
@@ -25,32 +22,24 @@ public class NewsViewPager extends ViewPager {
         super(context);
     }
 
+    private int maxHeight = 0;
+
     public NewsViewPager(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int height = 0;
-        for (int i = 0; i < getChildCount(); i++) {
-            View child = getChildAt(i);
-            if (child.getVisibility() != GONE) {
-                child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
-                int h = child.getMeasuredHeight();
-                if (h > height) {
-                    height = h;
-                }
-            }
+
+        if (maxHeight != 0) {
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.EXACTLY);
         }
-        DisplayMetrics dm = getContext().getResources().getDisplayMetrics();
-//        heightMeasureSpec = MeasureSpec.makeMeasureSpec(dm.heightPixels, MeasureSpec.EXACTLY);
-        if (height != 0) {
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
-        }
-        Log.d("===", "onMeasure:height = " + height);
-        Log.d("===", "onMeasure:dm = " + dm.heightPixels);
+
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-
+    public void setMaxHeight(int maxHeight) {
+        this.maxHeight = maxHeight;
+        requestLayout();
+    }
 }

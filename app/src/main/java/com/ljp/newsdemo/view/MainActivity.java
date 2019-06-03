@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.ljp.newsdemo.R;
 import com.ljp.newsdemo.adapter.ClassifyVpAdapter;
 import com.ljp.newsdemo.widget.NewsScrollView;
+import com.ljp.newsdemo.widget.NewsViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
         mTvContent.post(new Runnable() {
             @Override
             public void run() {
+                //TODO 需要优化
+                mViewPager.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((NewsViewPager) mViewPager).setMaxHeight(mTvContent.getMeasuredHeight() + mViewPager.getMeasuredHeight());
+                    }
+                });
                 mNewScrollview.setMaxScrollViewRange(mTvContent.getMeasuredHeight());
                 initData();
                 initListener();

@@ -6,48 +6,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <RelativeLayout
-        android:id="@+id/rl_top"
+        android:id="@+id/rl_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/rl_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:background="@color/colorAccent"
-                app:title="我是标题"/>
-
-            <TextView
-                android:id="@+id/tv_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbar"
-                android:padding="10dp"
-                android:text="@string/content"
-                android:textColor="@color/colorPrimary"
-                android:textSize="14sp"/>
-        </RelativeLayout>
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tab_layout"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:background="@color/colorPrimary"/>
+            android:background="@color/colorAccent"
+            app:title="我是标题"/>
 
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar"
+            android:padding="10dp"
+            android:text="@string/content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"/>
     </RelativeLayout>
 
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/colorPrimary"/>
 
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/rl_top"
+        android:layout_below="@id/rl_content"
         android:background="#333333"/>
 
     <com.ljp.newsdemo.widget.NewsViewPager
@@ -56,6 +50,5 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/view"
         android:background="#ffffff"/>
-
 
 </com.ljp.newsdemo.widget.NewsScrollView>

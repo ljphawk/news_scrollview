@@ -46,7 +46,8 @@ public class NewsScrollView extends RelativeLayout {
                 return super.onInterceptTouchEvent(ev);
             case MotionEvent.ACTION_UP:
                 Log.d(TAG, "onInterceptTouchEvent: evY - downEvY = " + (evY - downEvY));
-                if (Math.abs(evY - downEvY) <= 10) {
+                //小于等于5 就算是点击，正常的点击 down-up=0
+                if (Math.abs(evY - downEvY) <= 5) {
                     return super.onInterceptTouchEvent(ev);
                 }
                 break;
