@@ -63,6 +63,11 @@ public class NewsRvAdapter extends RecyclerView.Adapter<NewsRvAdapter.NewsViewHo
         return mShowItems == null ? 0 : mShowItems.size();
     }
 
+    public void setDataList(List<String> newsList) {
+        this.mShowItems = newsList;
+        notifyDataSetChanged();
+    }
+
     class NewsViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView mTvTitle;

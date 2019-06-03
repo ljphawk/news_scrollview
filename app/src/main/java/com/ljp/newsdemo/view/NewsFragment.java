@@ -36,6 +36,8 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private RecyclerView mRecyclerView;
     private Context mContext;
     private SwipeRefreshLayout mRefreshLayout;
+    private NewsRvAdapter mNewsRvAdapter;
+    private String mClassify;
 
     public static NewsFragment getInstance(String classifyId) {
         NewsFragment newsFragment = new NewsFragment();
@@ -52,27 +54,27 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View view = inflater.inflate(R.layout.fragment_news, container, false);
 
         Bundle bundle = getArguments();
-        String classify = bundle.getString(classifyIdKey);
+        mClassify = bundle.getString(classifyIdKey);
         mRecyclerView = view.findViewById(R.id.recyclerView);
         mRefreshLayout = view.findViewById(R.id.swipeRefresh);
         mRefreshLayout.setOnRefreshListener(this);
-        initData(classify);
+        initData();
 
         return view;
     }
 
 
-    private void initData(String classify) {
+    private void initData() {
         List<String > newsList = new ArrayList<>();
         //制造假数据
         for (int i = 0; i < 20; i++) {
-            newsList.add(i + "   我是  " + classify + "  类型的新闻标题 ");
+            newsList.add(i + "   我是  " + mClassify + "  类型的新闻标题 ");
         }
         //设置adapter
-        NewsRvAdapter newsRvAdapter = new NewsRvAdapter(mContext, newsList);
+        mNewsRvAdapter = new NewsRvAdapter(mContext, newsList);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mRecyclerView.setAdapter(newsRvAdapter);
+        mRecyclerView.setAdapter(mNewsRvAdapter);
     }
 
 
@@ -81,9 +83,21 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                List<String > newsList = new ArrayList<>();
+                for (int i = 0; i < 20; i++) {
+                    newsList.add(i + "   我是  刷新后的 " + mClassify + "  类型的新闻标题 ");
+                }
+                //设置adapter
+                mNewsRvAdapter.setDataList(newsList);
                 mRefreshLayout.setRefreshing(false);
                 Toast.makeText(mContext, "刷新完成", Toast.LENGTH_SHORT).show();
             }
         }, 1500);
+    }
+
+    public void setRvScrollTop() {
+        if (null != mRecyclerView) {
+            mRecyclerView.scrollToPosition(0);
+        }
     }
 }

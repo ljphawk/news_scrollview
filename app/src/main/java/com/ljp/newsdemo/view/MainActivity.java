@@ -3,8 +3,8 @@ package com.ljp.newsdemo.view;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
-    private ViewPager mViewPager;
+    private NewsViewPager mViewPager;
     private NewsScrollView mNewScrollview;
     private Context mContext;
     private TextView mTvContent;
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 mViewPager.post(new Runnable() {
                     @Override
                     public void run() {
-                        ((NewsViewPager) mViewPager).setMaxHeight(mTvContent.getMeasuredHeight() + mViewPager.getMeasuredHeight());
+                        mViewPager.setMaxHeight(mTvContent.getMeasuredHeight() + mViewPager.getMeasuredHeight());
                     }
                 });
                 mNewScrollview.setMaxScrollViewRange(mTvContent.getMeasuredHeight());
@@ -136,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
         ViewCompat.animate(mTabLayout).translationY(-mTabLayout.getHeight()).setDuration(500).start();
         ViewCompat.animate(mRlContent).alpha(0).alphaBy(1).setDuration(500).start();
         ViewCompat.animate(mRlContent).translationY(0).setDuration(500).start();
+        //要让recyclerview第一个条目滚动置顶
+        NewsFragment fragment = (NewsFragment) ((FragmentPagerAdapter) mViewPager.getAdapter()).getItem(mViewPager.getCurrentItem());
+        fragment.setRvScrollTop();
     }
 
     @Override
