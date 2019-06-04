@@ -72,7 +72,7 @@ public class NewsScrollView extends RelativeLayout {
                 return super.onTouchEvent(ev);
             case MotionEvent.ACTION_MOVE:
                 if (isMerge) {
-                    break;
+                    return super.onTouchEvent(ev);
                 }
                 //最大可移动范围 为scrollview中去除recyclerView的距离
                 //计算滚动距离
