@@ -3,11 +3,10 @@ package com.ljp.newsdemo.view;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -24,13 +23,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar mToolbar;
+    private static final String TAG = "MainActivity";
     private TabLayout mTabLayout;
     private NewsViewPager mViewPager;
     private NewsScrollView mNewScrollview;
     private Context mContext;
     private TextView mTvContent;
     private RelativeLayout mRlContent;
+    private int animDuration = 500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        mToolbar = findViewById(R.id.toolbar);
         mTvContent = findViewById(R.id.tv_content);
         mTabLayout = findViewById(R.id.tab_layout);
         mViewPager = findViewById(R.id.view_pager);
@@ -91,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScrollChange(final float y, int maxRange, boolean isAnim) {
                 //计算tabLayout要移动的距离
-                int height = mTabLayout.getHeight();
+                float height = mTabLayout.getHeight();
                 //计算倍率
-                float power = height * 1f / maxRange;
+                float power = height / maxRange;
                 //计算tablayout的滚动距离
                 float tabMoveY = -height + power * Math.abs(y);
                 //透明度的计算0—1
@@ -103,15 +102,15 @@ public class MainActivity extends AppCompatActivity {
                 float contentMoveY = 0 - (power * Math.abs(y));
                 if (isAnim) {
                     AnimListener animListener = new AnimListener();
-                    ViewCompat.animate(mViewPager).translationY(y).setDuration(500).setListener(animListener).start();
-                    ViewCompat.animate(mTabLayout).translationY(tabMoveY).setDuration(500).start();
-                    ViewCompat.animate(mRlContent).translationY(contentMoveY).setDuration(500).start();
+                    ViewCompat.animate(mViewPager).translationY(y).setDuration(animDuration).setListener(animListener).start();
+                    ViewCompat.animate(mTabLayout).translationY(tabMoveY).setDuration(animDuration).start();
+                    ViewCompat.animate(mRlContent).translationY(contentMoveY).setDuration(animDuration).start();
                     if (y == 0) {
                         //还原了
-                        ViewCompat.animate(mRlContent).alpha(alpha).alphaBy(1).setDuration(500).start();
+                        ViewCompat.animate(mRlContent).alpha(1).setDuration(animDuration).start();
                     } else {
                         //合并了
-                        ViewCompat.animate(mRlContent).alpha(alpha).alphaBy(0).setDuration(500).start();
+                        ViewCompat.animate(mRlContent).alpha(0).setDuration(animDuration).start();
                     }
                 } else {
                     mViewPager.setTranslationY(y);
@@ -125,13 +124,18 @@ public class MainActivity extends AppCompatActivity {
 
     //恢复layout的动画
     private void restoreLayoutAnim() {
-        ViewCompat.animate(mViewPager).translationY(0).setDuration(500).start();
-        ViewCompat.animate(mTabLayout).translationY(-mTabLayout.getHeight()).setDuration(500).start();
-        ViewCompat.animate(mRlContent).alpha(0).alphaBy(1).setDuration(500).start();
-        ViewCompat.animate(mRlContent).translationY(0).setDuration(500).start();
+        ViewCompat.animate(mViewPager).translationY(0).setDuration(animDuration).start();
+        ViewCompat.animate(mTabLayout).translationY(-mTabLayout.getHeight()).setDuration(animDuration).start();
+        ViewCompat.animate(mRlContent).alpha(1).setDuration(animDuration).start();
+        ViewCompat.animate(mRlContent).translationY(0).setDuration(animDuration).start();
         //要让recyclerview第一个条目滚动置顶
-        NewsFragment fragment = (NewsFragment) ((FragmentPagerAdapter) mViewPager.getAdapter()).getItem(mViewPager.getCurrentItem());
-        fragment.setRvScrollTop();
+        try {
+            NewsFragment fragment = ((ClassifyVpAdapter) mViewPager.getAdapter()).getItem(mViewPager.getCurrentItem());
+            fragment.setRvScrollTop();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "restoreLayoutAnim: e=" + e.getMessage());
+        }
     }
 
     @Override
