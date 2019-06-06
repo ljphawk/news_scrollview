@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private Context mContext;
     private TextView mTvContent;
     private RelativeLayout mRlContent;
-    private int animDuration = 500;
+    private final int animDuration = 500;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +98,8 @@ public class MainActivity extends AppCompatActivity {
                 //透明度的计算0—1
                 float alphaPower = 1f / maxRange;
                 float alpha = 1 - (alphaPower * Math.abs(y));
-                //mRlContent 也一起移动 只移动
-                float contentMoveY = 0 - (power * Math.abs(y));
+                //mRlContent 也一起移动 最多移动tablayout的高度，计算如下
+                float contentMoveY = -(height + tabMoveY);
                 if (isAnim) {
                     AnimListener animListener = new AnimListener();
                     ViewCompat.animate(mViewPager).translationY(y).setDuration(animDuration).setListener(animListener).start();
